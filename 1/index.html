@@ -33,22 +33,20 @@
     <section>
         <h2>Main Approach</h2>
         <p>
-            The assignment's goal is to align and colorize the Prokudin-Gorskii glass plate negatives using image processing techniques. This involves extracting and precisely overlaying the three filtered images to form a coherent color image with minimal visual artifacts.
-        </p>
+            The primary objective of this project is to align and colorize the Prokudin-Gorskii glass plate negatives through sophisticated image processing techniques. This process involves meticulously separating and then overlaying three filtered images (representing the Blue, Green, and Red channels) to reconstruct the original color photographs with minimal visual distortions.</p>
     
         <h3>Data</h3>
         <p>
             Each glass plate image will be divided into three equal parts representing the Blue, Green, and Red channels. The program will align the Green and Red segments to the Blue segment and output the (x,y) displacement vectors used for alignment.
-            A predefined margin is cropped off to avoid the borders affecting the evaluation of alignment metrics, based on the provided cropping function.
+            A predefined margin of 0.05 is cropped off from each side of every channels to avoid the borders affecting the evaluation of alignment metrics, based on the provided cropping function.
         </p>
     
         <h3>Displacement Window Search</h3>
         <p>
-            Alignment is achieved through an exhaustive search over a range of potential displacements. The optimal alignment is determined by selecting the displacement that maximizes the Structural Similarity Index (SSIM). This method emphasizes the similarity in structure across the channels and minimizes discrepancies caused by variations in color intensities.   </p>
-    
+            The alignment process is driven by an exhaustive search across a defined range of possible displacements. The ideal alignment is identified by selecting the displacement that maximizes <strong>Structural Similarity Index (SSIM) </strong>, a method that quantifies the visual impact of differences between the compared images. This metric is chosen over <strong>Normalized Cross-Correlation (NCC)</strong> as it focuses on enhancing structural integrity and reducing discrepancies in color intensity between the channels.
         <h3>Pyramidal Approach for Alignment</h3>
         <p>
-            For high-resolution images, exhaustive search becomes computationally expensive. To manage this, an image pyramid approach is employed. The image is processed at multiple scales, beginning from the coarsest scale (smallest image) and progressing to finer scales, refining the alignment at each step. This method allows for rapid convergence to the best alignment with considerable computational efficiency.
+            For high-resolution images, exhaustive search becomes computationally expensive. To manage this, an image pyramid approach is employed. The image is processed at multiple scales, beginning from the coarsest scale (smallest image) and progressing to finer scales, refining the alignment at each step at a reduction factor of 0.5. This method allows for rapid convergence to the best alignment with considerable computational efficiency.
         </p>
     
     </section>
@@ -73,6 +71,10 @@
                 <p class="image-caption">Original</p>
             </div>
             <div class="comparison-item">
+                <img src="./out/thresh.jpg" alt="Thresh Cathedral">
+                <p class="image-caption">Thresh</p>
+            </div>
+            <div class="comparison-item">
                 <img src="./out/crop_cathedral.jpg" alt="Cropped Cathedral">
                 <p class="image-caption">Cropped</p>
             </div>
@@ -80,12 +82,7 @@
     
         <h3>Automatic Contrasting</h3>
         <p>
-            Contrast enhancement is achieved via <code>auto_contrast</code>, which applies histogram equalization to each color channel of an image. This method ensures that the dynamic range of the tones is fully utilized, improving the overall visual perception of the image by:
-            <ul>
-                <li>Separating the image into its RGB components.</li>
-                <li>Equalizing each component individually to enhance the contrast.</li>
-                <li>Recombining the adjusted channels back into a single image.</li>
-            </ul>
+            Contrast enhancement is achieved via <code>auto_contrast</code>, which applies <strong>Histogram Equalization</strong> to each color channel of an image, which modifies the distribution of pixel intensities across each color channel by the mapping based on the <strong>Cumulative Distribution Function (CDF)</strong> from the histogram. This method ensures that the dynamic range of the tones is fully utilized, improving the overall visual perception of the image.
         </p>
     </section>
 
