@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS180 Project #2</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Cambria, sans-serif;
+            margin: 50px;
+            font-size: 17px; 
+            padding: 50px; 
+        }
+
+        header, section {
+            margin-bottom: 10px;
+        }
+
+        h1, h2, h3, h4 {
+            color: #5A5FAA;
+        }
+
+        h1 {
+            font-size: 2em; 
+        }
+
+        h2 {
+            font-size: 1.65em;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 20px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header>
+        <h1>CS180 Project #2: Fun with Filters and Frequencies!</h1>
+    </header>
+
+    <section>
+        <h2>Part 1: Fun with Filters</h2>
+
+        <h3>Part 1.1: Finite Difference Operator</h3>
+        <p>Apply the humble finite difference as the filter in the x and y directions:</p>
+        <div class="image-container">
+            <img src="./images/diff_op.png" alt="diff_op" style="max-height: 75px;">
+        </div>
+
+        <p>Approximate the partial derivatives by: 
+            \( \left[ -1 \quad 1 \right] \; \text{to estimate} \; \frac{\partial f(x, y)}{\partial x} \approx \frac{f(x + 1, y) - f(x, y)}{1} \), 
+            \( \left[ -1 \quad 1 \right]^\top \; \text{to estimate} \; \frac{\partial f(x, y)}{\partial x} \approx \frac{f(x, y+1) - f(x, y)}{1} \). 
+        </p>
+
+        <p>The gradient magnitude is given by: 
+            \( ||\delta f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2} \). </p>
+        <p>Here the finite different operator is applied to covolved with input image to produce the partial derivatives. Then the gradient magnitude is computed by the formula. 
+        </p>
+
+        <div class="image-container">
+            <img src="./images/p1.png" alt="p1_visual" style="max-height: 300px;">
+        </div>
+
+        <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
+        <p>Blur the image by Gaussian Filter before applying the finite difference operators, the visualizations have less noise and the edges are clearer:</p>
+        <div class="image-container">
+            <img src="./images/p1_2_1.png" alt="p1_2_visual" style="max-height: 300px;">
+        </div>
+        <p>By the commutativity and associativity of convolution, apply the Gaussian Filter convolved by finite difference operators to the images directly should produce the same result:</p>
+        <div class="image-container">
+            <img src="./images/p1_2_2.png" alt="p1_2_visual" style="max-height: 300px;">
+        </div>
+    </section>
+
+    <section>
+        <h2>Part 2: Fun with Frequencies!</h2>
+
+        <h3>Part 2.1: Image "Sharpening"</h3>
+        <p>Apply the unsharp mask filter to the following sample images:</p>
+        <div class="image-container">
+            <img src="./images/p2_1.png" alt="p1_2_visual" style="max-width: 550px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/p2_1_cat.png" alt="p1_2_visual" style="max-width: 550px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/p2_1_cat_p.png" alt="p1_2_visual" style="max-width: 550px;">
+        </div>
+        <p>After blurring the images, applying the unsharp mask filter will emphasize the edges of general shapes instead of details since the noise is filtered before sharpening:</p>
+        <div class="image-container">
+            <img src="./images/p2_1_cat_p_blurred.png" alt="p1_2_visual" style="max-width: 550px;">
+        </div>
+
+        <h3>Part 2.2: Hybrid Images</h3>
+        <div class="image-container">
+            <img src="./images/p2_2.png" alt="p1_2_visual" style="max-width: 1200px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/p2_2_fish.png" alt="p1_2_visual" style="max-width: 1200px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/p2_2_oct.png" alt="p1_2_visual" style="max-width: 1200px;">
+        </div>
+
+        <p>Bells & Whistles: It works better with color from both images.</p>
+        <p>The log magnitude of the Fourier transform of the hybrid of casper octopus and octopus plushie:</p>
+        <div class="image-container">
+            <img src="./images/fft.png" alt="fft_visual" style="max-width: 1200px;">
+        </div>
+
+        <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
+        <p>Apply the Gaussian and Laplacian stacks to the Oraple:</p>
+        <div class="image-container">
+            <img src="./images/laplacian.png" alt="laplacian_visual" style="max-width: 1200px;">
+        </div>
+
+        <h3>Part 2.4: Multiresolution Blending (a.k.a. the oraple!)</h3>
+        <p>Apply the Gaussian and Laplacian stacks to the Oraple:</p>
+        <div class="image-container">
+            <img src="./images/oraple.png" alt="oraple_visual" style="max-width: 1200px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/melon.png" alt="melon_visual" style="max-width: 1200px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/oct_sea.png" alt="oct_sea_visual" style="max-width: 1200px;">
+        </div>
+        <div class="image-container">
+            <img src="./images/p2_4_oct_sea.png" alt="oct_sea_blend_visual" style="max-width: 1200px;">
+        </div>
+    </section>
+</body>
+</html>
