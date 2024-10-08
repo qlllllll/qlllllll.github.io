@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS180 Project #3</title>
+    <style>
+        body { font-family: Cambria, sans-serif; margin: 100px; line-height: 1.6;}
+        header, section { margin-bottom: 10px; }
+        header, h1, h2, h3, h4 { color: #5A5FAA; }
+        p {font-size: 1.1em;}
+        h3 { margin-top: 10px; margin-bottom: 1px; }
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 10px auto; 
+        }
+        .code {
+        font-family: 'Courier New', Courier, monospace; 
+        background-color: #f4f4f4;
+        color: #410c19; 
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+    <header>
+        <h1>CS180 Project #3: Face Morphing</h1>
+    </header>
+
+    <section>
+        <h2>Part 1. Defining Correspondences</h2>
+
+        <p>
+            <p>Using the labelling tool provided <a href="https://cal-cs180.github.io/fa23/hw/proj3/tool.html" target="_blank">here</a> to define pairs of corresponding points on the two images by hand. Then a Delaunay triangulation is created at a midway shape. </p>
+           
+            <p>Here Martin Schoeller's photography of George Clooney and Emma Watson are used as examples. </p>
+           <div class="image-item"></div>
+            <img src="./output/triangulation.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+        </p>
+    </section>
+
+    <section>
+        <h2>Part 2. Computing the "Mid-way Face"</h2>
+        <p>
+            <p>To compute the mid-way face, following the steps: 1) computing the average shape, 2) warping both faces into that shape, and 3) averaging the colors together. </p>
+            
+            <p>For each triangle defined by the facial landmarks, an affine transformation matrix is computed. <span class="code">skimage.draw.Polygon</span> is used to generates a triangular mask for later inverse warping. <span class="code">scipy.interpolate.griddata</span> is utilized to perform interpolation of pixel values within the triangular regions identified by the polygon function. 
+                Finally cross-dissolve the two warped images.
+            </p>
+
+                <img src="./output/mid-face.png" alt="p1_2_visual", style="max-height: 300px;">
+
+        </p>
+
+    </section>
+
+    <section>
+        <h2>Part 3. The Morph Sequence</h2>
+        <p>
+            <p>The function <span class="code">morphed_im</span> produces a warp between im1 and im2 using point correspondences defined in im1_pts and im2_pts and the triangulation structure tri. The parameters <span class="code">warp_frac</span> and <span class="code">dissolve_frac</span> control shape warping and cross-dissolve, respectively. For interpolation, both parameters lie in the range [0,1]. </p>
+
+            <p>The full morph sequence is displayed in the gif, with 45 frames of animation at 30 fps: </p>
+                <img src="./output/p2-morphing.gif" alt="p1_2_visual", style="max-height: 300px;">
+
+        </p>
+
+    </section>
+
+    <section>
+        <h2>Part 4. The "Mean face" of a population</h2>
+        <p>
+            <p>Use the Danes dataset of annotated faces, with the keypoints already annotated on the data, the average face shape is computed as described in previous sections. </p>
+            <p>Then Morph each of the faces in the dataset into the average shape. Here are some examples. </p>
+            <img src="./output/example.png" alt="p1_2_visual", style="max-height: 300px;">
+
+
+            <p></p>The average face of the male and female population is computed and displayed below: </p>
+            <img src="./output/avg.png" alt="p1_2_visual", style="max-height: 300px;">
+
+
+            <p>1) face warped into the average geometry, and 2) the average face warped into the face's geometry.</p>
+            <img src="./output/morph_avg.png" alt="p1_2_visual", style="max-height: 300px;">
+
+        </p>
+
+    </section>
+
+    <section>
+        <h2>Part 5. Caricatures: Extrapolating from the mean</h2>
+        <p>
+            <p>Calculate the shape of caricature by the formula <span class="code">im + alpha*(mean - im)</span>, and then warped the face to the target. </p>
+            <img src="./output/exag-face.png" alt="p1_2_visual", style="max-height: 300px;">
+
+        </p>
+
+    </section>
+
+    <section>
+        <h2>Bells and Whistles</h2>
+        <p>
+            <p> Change gender of targeted face. Morphing the face to the average face of the male from last section. From the visualization, it could be seen that using both shape and appearance brings the better result.</p>
+                
+            <img src="./output/bw.png" alt="p1_2_visual", style="max-height: 300px;">
+
+        </p>
+
+    </section>
+    
+
+
+</body>
+</html>
