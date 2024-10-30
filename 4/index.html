@@ -189,8 +189,102 @@
         </p>
 
     </section>
-    
+    <hr>
 
+    <section>
+        <h2>Interest Point Detection</h2>
+        <p>
+            <p>Using sample code <span class="code">harris.py</span>, detect and locate the Harris corner points in a grayscale image.
+                </p>
+
+            <div class="image-item"></div>
+            <img src="./out/harris.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+        </p>
+
+    </section>
+    <hr>
+
+    <section>
+        <h2>Adaptive Non-Maximal Suppression</h2>
+        <p>
+            <p>
+                From the MOPS paper, interest points are suppressed based on the corner strength \(f_{HM}\) , and only those that are a maximum in a neighbourhood of radius \(r\) pixels are retained. As the suppression radius decreases from infinity, interest points are added to the list. 
+                In practice, the minimum suppression radius \(r_i\) given by\(r_i = min_j |x_i - x_j|, s.t. f(x_i) < c_{robust} f(x_j), x_j \in \mathcal{I}\) is calculated for each corner, then the results of the defined number of interest points are returned from the ordered list.
+            </p>
+            
+            <p>The two upper images show interest points with the highest corner strength, while the lower two images show interest points selected with adaptive non-maximal suppression with \(c_{robust}=0.9, n_{ip}=500\):</p>
+
+            <div class="image-item"></div>
+            <img src="./out/anms.png" alt="p1_visual", style="max-height: 500px;">
+            </div>
+        </p>
+
+    </section>
+    <hr>
+
+    <section>
+        <h2>Feature Descriptor Extraction</h2>
+        <p>
+            <p>As the paper suggests, a \(8 × 8\) patch of pixels are sampled around the
+                sub-pixel location of the interest point, using a spacing of
+                \(s = 5\) pixels between samples. Then the descriptor vector is normalised so
+                that the mean is 0 and the standard deviation is 1. Here is an example of feature descriptor: </p>
+
+            <div class="image-item"></div>
+            <img src="./out/feature.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Feature Matching</h2>
+        <p>
+            <p>With the use of kd-tree, a ratio threshold of \(e_{1-NN}/e_{2-NN} \) is used to find correct matches by Lowe's technique, 
+                based on the assumption that the 1-NN in
+                some image is a potential correct match, whilst the 2-NN
+                in that same image is an incorrect match. </p>
+            <div class="image-item"></div>
+            <img src="./out/matches.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>RANdom SAmple Consensus</h2>
+        <p>
+            <p>
+                Use 4-point RANSAC as described in class to compute a robust homography estimate and a set of inliers of matches. 
+                Within each iteraction, four feature pairs are selected at random, then the exact homography H is computed. 
+                The set of inliers is computed where \( \text{dist}(p'_i, H p_i) < \epsilon \). Over the iteractions, the largest set of inliers are kept, and least-squares H estimate on all of the
+                inliers is re-computed. 
+            </p>
+            <div class="image-item"></div>
+            <img src="./out/ransac.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+
+            <p>The final mosaic is presented below, with the warping and blending process same as stated above. </p>
+            <div class="image-item"></div>
+            <img src="./out/mosaic.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+
+            <p>More results are attached below.</p>
+            <div class="image-item"></div>
+            <img src="./out/mosaic3.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+
+            <div class="image-item"></div>
+            <img src="./out/mosaic2.png" alt="p1_visual", style="max-height: 300px;">
+            </div>
+        </p>
+
+    </section>
 
 </body>
 </html>
